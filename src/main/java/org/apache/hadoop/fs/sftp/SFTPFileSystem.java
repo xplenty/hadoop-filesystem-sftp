@@ -56,7 +56,7 @@ public class SFTPFileSystem extends FileSystem {
 	  
 	private final int MAX_BUFFER_SIZE = 32768;
 	private final int DEFAULT_PORT = 22;
-	private final String DEFAULT_KEY_FILE = "${user.home}/.ssh/id_rsa";
+	private final String DEFAULT_KEY_FILE = System.getenv("SFTP_PRIVATE_KEY_FILE_PATH") != null ? System.getenv("SFTP_PRIVATE_KEY_FILE_PATH") : "${user.home}/.ssh/id_rsa";
 
 	private final String PARAM_BUFFER_SIZE = "io.file.buffer.size";
 	private final String PARAM_HOST = "fs.sftp.host";
@@ -202,9 +202,9 @@ public class SFTPFileSystem extends FileSystem {
 
 	@Override
 	public void close() throws IOException {
-		super.close();
 		LOG.info("Closing client");
 		closeClient();
+		super.close();
 	}
 
 	private void closeClient() throws IOException {
