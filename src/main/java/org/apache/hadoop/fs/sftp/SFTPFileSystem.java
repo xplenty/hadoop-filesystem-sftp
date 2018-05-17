@@ -202,9 +202,9 @@ public class SFTPFileSystem extends FileSystem {
 
 	@Override
 	public void close() throws IOException {
+		super.close();
 		LOG.info("Closing client");
 		closeClient();
-		super.close();
 	}
 
 	private void closeClient() throws IOException {
