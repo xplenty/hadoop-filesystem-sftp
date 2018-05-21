@@ -289,8 +289,12 @@ public class SFTPFileSystem extends FileSystem {
 			throws IOException {
 		LOG.info("creating dir: " + file.toString());
 		if (!exists(file, false)) {
-			getClient().mkdirs(file.toUri().getPath());
-		}
+			Path parent = file.getParent();
+			if (parent != null)
+				mkdirs(parent, permission);
+			getClient().mkdir(file.toUri().getPath());
+		} else if (isFile(file))
+				throw new IOException("While trying to mkdir, path " + file + " exists but is not a directory.");
 		return true;
 	}
 
